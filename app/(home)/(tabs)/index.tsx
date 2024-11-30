@@ -12,17 +12,32 @@ import {
   MessageList,
 } from "stream-chat-expo";
 import { useState } from "react";
-import { router } from "expo-router";
+import { Link, router, Stack } from "expo-router";
+import { useAuth } from "@/providers/AuthProvider";
+
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 export default function MainTabSceen() {
-  const [channel, setChannel] = useState();
+  const { user } = useAuth();
 
   return (
     <>
-      <ThemedView>
-        <ThemedText style={styles.title}>Chats</ThemedText>
-      </ThemedView>
+      <Stack.Screen
+        options={{
+          headerRight: () => (
+            <Link href={"/(home)/users"} asChild>
+              <FontAwesome5
+                name="user-plus"
+                size={24}
+                color="grey"
+                style={{ marginHorizontal: 16 }}
+              />
+            </Link>
+          ),
+        }}
+      />
       <ChannelList
+        filters={{ members: { $in: [user?.id] } }}
         onSelect={(channel) => {
           router.push(`/channel/${channel.cid}`);
         }}
