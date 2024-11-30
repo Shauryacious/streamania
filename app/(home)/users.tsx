@@ -1,3 +1,4 @@
+import UserListItem from "@/components/userListItem";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/providers/AuthProvider";
 import { useEffect, useState } from "react";
@@ -28,7 +29,8 @@ export default function UsersScreen() {
   return (
     <FlatList
       data={users}
-      renderItem={({ item }) => <Text>{item.full_name}</Text>}
+      contentContainerStyle={{ gap: 5 }}
+      renderItem={({ item }) => <UserListItem user={item} />}
     />
   );
 }
