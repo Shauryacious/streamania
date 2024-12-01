@@ -4,6 +4,7 @@ import { Chat, OverlayProvider } from "stream-chat-expo";
 import { ActivityIndicator, View, StyleSheet } from "react-native";
 import { useAuth } from "./AuthProvider";
 import { supabase } from "@/lib/supabase";
+import { tokenProvider } from "@/utils/tokenProvider";
 
 const client = StreamChat.getInstance(process.env.EXPO_PUBLIC_STREAM_API_KEY); // public key
 
@@ -24,6 +25,9 @@ export default function ChatProvider({ children }: PropsWithChildren) {
         return;
       }
 
+      const token = await tokenProvider();
+      console.log("Token : ", token);
+
       try {
         await client.connectUser(
           {
@@ -31,7 +35,8 @@ export default function ChatProvider({ children }: PropsWithChildren) {
             name: profile.full_name,
             image: avatarUrl.data.publicUrl,
           },
-          client.devToken(profile.id) // "user_token"
+          tokenProvider
+          // client.devToken(profile.id) // "user_token"
         );
         setIsReady(true);
 
@@ -46,9 +51,8 @@ export default function ChatProvider({ children }: PropsWithChildren) {
     connect();
 
     return () => {
-      if (isReady) {
-        client.disconnectUser();
-      }
+      client.disconnectUser();
+
       setIsReady(false);
     };
   }, [profile]);
