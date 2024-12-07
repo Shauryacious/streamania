@@ -1,12 +1,18 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { supabase } from "./../../../lib/supabase";
-import { StyleSheet, View, Alert, ScrollView } from "react-native";
-import { Button, Input } from "@rneui/themed";
-import { Session } from "@supabase/supabase-js";
+import {
+  StyleSheet,
+  View,
+  Alert,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import { useAuth } from "@/providers/AuthProvider";
 import Avatar from "@/components/Avatar";
 
-export default function PofileScreen() {
+export default function ProfileScreen() {
   const { session } = useAuth();
 
   const [loading, setLoading] = useState(true);
@@ -104,33 +110,41 @@ export default function PofileScreen() {
         />
       </View>
       <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Input label="Email" value={session?.user?.email} disabled />
+        <Text style={styles.label}>Email</Text>
+        <TextInput
+          style={styles.input}
+          value={session?.user?.email}
+          editable={false}
+        />
       </View>
       <View style={styles.verticallySpaced}>
-        <Input
-          label="Full Name"
+        <Text style={styles.label}>Full Name</Text>
+        <TextInput
+          style={styles.input}
           value={fullName || ""}
           onChangeText={(text) => setFullName(text)}
         />
       </View>
       <View style={styles.verticallySpaced}>
-        <Input
-          label="Username"
+        <Text style={styles.label}>Username</Text>
+        <TextInput
+          style={styles.input}
           value={username || ""}
           onChangeText={(text) => setUsername(text)}
         />
       </View>
       <View style={styles.verticallySpaced}>
-        <Input
-          label="Website"
+        <Text style={styles.label}>Website</Text>
+        <TextInput
+          style={styles.input}
           value={website || ""}
           onChangeText={(text) => setWebsite(text)}
         />
       </View>
 
       <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button
-          title={loading ? "Loading ..." : "Update"}
+        <TouchableOpacity
+          style={[styles.button, loading && styles.buttonDisabled]}
           onPress={() =>
             updateProfile({
               username,
@@ -140,11 +154,20 @@ export default function PofileScreen() {
             })
           }
           disabled={loading}
-        />
+        >
+          <Text style={styles.buttonText}>
+            {loading ? "Loading ..." : "Update"}
+          </Text>
+        </TouchableOpacity>
       </View>
 
       <View style={[styles.verticallySpaced, { marginBottom: 20 }]}>
-        <Button title="Sign Out" onPress={() => supabase.auth.signOut()} />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => supabase.auth.signOut()}
+        >
+          <Text style={styles.buttonText}>Sign Out</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -162,5 +185,32 @@ const styles = StyleSheet.create({
   },
   mt20: {
     marginTop: 20,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 8,
+  },
+  input: {
+    height: 40,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingHorizontal: 8,
+    fontSize: 16,
+  },
+  button: {
+    backgroundColor: "#007bff",
+    padding: 10,
+    borderRadius: 4,
+    alignItems: "center",
+  },
+  buttonDisabled: {
+    backgroundColor: "#b0c4de",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
