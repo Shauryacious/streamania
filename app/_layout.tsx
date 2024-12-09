@@ -13,6 +13,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import AuthProvider from "@/providers/AuthProvider";
+// import { PermissionsAndroid, Platform } from "react-native";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -33,6 +34,15 @@ export default function RootLayout() {
     return null;
   }
 
+  // useEffect(() => {
+  //   const run = async () => {
+  //     if(Platform.OS === "android"){
+  //       await PermissionsAndroid.requestMultiple
+  //       ([
+  //         'android.permission.POST_NOTIFICATIONS',
+  //         'android.permission.BLUETOOTH_CONNECT',
+  //       ]);
+  //     }
   return (
     <GestureHandlerRootView>
       <AuthProvider>

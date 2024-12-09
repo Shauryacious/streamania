@@ -12,7 +12,7 @@ import {
   MessageList,
 } from "stream-chat-expo";
 import { useState } from "react";
-import { Link, router, Stack } from "expo-router";
+import { Link, Redirect, router, Stack } from "expo-router";
 import { useAuth } from "@/providers/AuthProvider";
 
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
@@ -22,6 +22,7 @@ export default function MainTabSceen() {
 
   return (
     <>
+      <Redirect href={"/(home)/call"} />;
       <Stack.Screen
         options={{
           headerRight: () => (
